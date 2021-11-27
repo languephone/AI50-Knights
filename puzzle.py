@@ -42,26 +42,13 @@ knowledge2 = And(
     Or(BKnight, BKnave), # B is a knight or a knave
     Not(And(AKnight, AKnave)), # A is not both a knight and a knave
     Not(And(BKnight, BKnave)), # B is not both a knight and a knave
-    Or( # A says "We are the same kind."
-        Or( # A is a knight and says "We are the same kind."
-            And(AKnight, AKnight, BKnight), # If A is a knight then A & B are the same kind (knights)
-            And(AKnight, AKnave, BKnave), # If A is a knight then A & B are the same kind (knaves)
-        ),
-        Or( # A is a knave and says "We are the same kind."
-            And(AKnave, Not(And(AKnave, BKnave))), # If A is a knave, then A & B are NOT the same kind (knaves)
-            And(AKnave, Not(And(AKnight, BKnight))), # If A is a knave, then A & B are NOT the same kind (knights) 
-        ),
-    ),
-    Or(
-        Or( # B is a knight and says "We are of different kinds."
-            And(BKnight, Not(And(AKnight, BKnight))), # If B is a knight, then A & B are NOT the same kind (knights)
-            And(BKnight, Not(And(AKnave, BKnave))), # If B is a knight, then A & B are NOT the same kind (knaves)
-        ),
-        Or( # B is a knave and sayes "We are of different kinds."
-            And(BKnave, Not(And(AKnight, BKnave))), # If B is a knave, then A & B are NOT the same kind (knaves)
-            And(BKnave, Not(And(AKnave, BKnight))), # If B is a knave, then A & B are NOT the same kind (knights)
-        ),
-    )
+
+    # A says "We are the same kind."
+    Implication(AKnight, BKnight), # If A is a knight, then b is the same kind (knight)
+    Implication(AKnave, Not(BKnave)), # If A is a knave, then b is not the same kind (knave)
+    # B says "We are of different kinds."
+    Implication(BKnight, AKnave),
+    Implication(BKnave, Not(AKnight)),
 )
 
 # Puzzle 3
