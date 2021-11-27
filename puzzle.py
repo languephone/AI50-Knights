@@ -28,7 +28,7 @@ knowledge1 = And(
     Or(BKnight, BKnave), # B is a knight or a knave
     Not(And(AKnight, AKnave)), # A is not both a knight and a knave
     Not(And(BKnight, BKnave)), # B is not both a knight and a knave
-    Or(
+    Or( # A says "We are both knaves."
         And(AKnight, AKnave, BKnave), # If A is a knight then A & B are knaves
         And(AKnave, Or(Not(AKnave), Not(BKnave))), # If A is a knave then A & B are not both knaves 
     )
@@ -38,7 +38,30 @@ knowledge1 = And(
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    Or(AKnight, AKnave), # A is a knight or a knave
+    Or(BKnight, BKnave), # B is a knight or a knave
+    Not(And(AKnight, AKnave)), # A is not both a knight and a knave
+    Not(And(BKnight, BKnave)), # B is not both a knight and a knave
+    Or( # A says "We are the same kind."
+        Or( # A is a knight and says "We are the same kind."
+            And(AKnight, AKnight, BKnight), # If A is a knight then A & B are the same kind (knights)
+            And(AKnight, AKnave, BKnave), # If A is a knight then A & B are the same kind (knaves)
+        ),
+        Or( # A is a knave and says "We are the same kind."
+            And(AKnave, Not(And(AKnave, BKnave))), # If A is a knave, then A & B are NOT the same kind (knaves)
+            And(AKnave, Not(And(AKnight, BKnight))), # If A is a knave, then A & B are NOT the same kind (knights) 
+        ),
+    ),
+    Or(
+        Or( # B is a knight and says "We are of different kinds."
+            And(BKnight, Not(And(AKnight, BKnight))), # If B is a knight, then A & B are NOT the same kind (knights)
+            And(BKnight, Not(And(AKnave, BKnave))), # If B is a knight, then A & B are NOT the same kind (knaves)
+        ),
+        Or( # B is a knave and sayes "We are of different kinds."
+            And(BKnave, Not(And(AKnight, BKnave))), # If B is a knave, then A & B are NOT the same kind (knaves)
+            And(BKnave, Not(And(AKnave, BKnight))), # If B is a knave, then A & B are NOT the same kind (knights)
+        ),
+    )
 )
 
 # Puzzle 3
@@ -47,7 +70,30 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    Or(AKnight, AKnave), # A is a knight or a knave
+    Or(BKnight, BKnave), # B is a knight or a knave
+    Or(CKnight, CKnave), # C is a knight or a knave
+    Not(And(AKnight, AKnave)), # A is not both a knight and a knave
+    Not(And(BKnight, BKnave)), # B is not both a knight and a knave
+    Not(And(CKnight, CKnave)), # C is not both a knight and a knave
+    Or( # A says either "I am a knight." or "I am a knave.", but you don't know which.
+        Or(And(AKnight, Or(AKnight, AKnave))), # A is a knight and says either "I am a knight." or "I am a knave."
+        Or(And(AKnave, Or(Not(AKnight), Not(AKnave)))),
+    ),
+    Or(
+        And(BKnight, AKnight, BKnave), # B is a knight and A is a knight and B says "A said 'I am a knave'."
+        And(BKnight, AKnave, Not(BKnave)), # B is a knight and A is a knave and B says "A said 'I am a knave'."
+        And(BKnave, AKnight, Not(BKnave)), # B is a knave and A is a knight and B says "A said 'I am a knave'."
+        And(BKnave, AKnave, Not(Not(BKnave))), # B is a knave and  A is a knave and B says "A said 'I am a knave'."
+    ),
+    Or(
+        And(BKnight, CKnave), # B is a knight and says "C is a knave."
+        And(BKnave, Not(CKnave)), # B is a knave and says "C is a knave."
+    ),
+    Or(
+        And(CKnight, AKnight), # C is a knight and says "A is a knight."
+        And(CKnave, Not(AKnight)), # C is a knave and says "A is a knight."
+    ),
 )
 
 
