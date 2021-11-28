@@ -45,11 +45,11 @@ knowledge2 = And(
 
     Or( # A says "We are the same kind."
         And(AKnight, BKnight), # If A is a knight, then b is the same kind (knight)
-        And(AKnave, Not(BKnave)), # If A is a knave, then b is not the same kind (knave)
+        And(AKnave, Not(And(AKnave, BKnave))), # If A is a knave, then b is not the same kind (knave)
     ),
     Or( # B says "We are of different kinds."
         And(BKnight, AKnave),
-        And(BKnave, Not(AKnight)),
+        And(BKnave, Not(And(BKnave, AKnight))),
     ),
 )
 
