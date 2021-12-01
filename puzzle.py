@@ -66,14 +66,14 @@ knowledge3 = And(
     Not(And(BKnight, BKnave)), # B is not both a knight and a knave
     Not(And(CKnight, CKnave)), # C is not both a knight and a knave
     Or( # A says either "I am a knight." or "I am a knave.", but you don't know which.
-        Or(And(AKnight, Or(AKnight, AKnave))), # A is a knight and says either "I am a knight." or "I am a knave."
-        Or(And(AKnave, Or(Not(AKnight), Not(AKnave)))),
+        And(AKnight, Or(AKnight, AKnave)), # A is a knight and says either "I am a knight." or "I am a knave."
+        And(AKnave, Or(Not(AKnight), Not(AKnave))), # A is a knave and says either "I am a knight." or "I am a knave."
     ),
     Or(
-        And(BKnight, AKnight, BKnave), # B is a knight and A is a knight and B says "A said 'I am a knave'."
-        And(BKnight, AKnave, Not(BKnave)), # B is a knight and A is a knave and B says "A said 'I am a knave'."
-        And(BKnave, AKnight, Not(BKnave)), # B is a knave and A is a knight and B says "A said 'I am a knave'."
-        And(BKnave, AKnave, Not(Not(BKnave))), # B is a knave and  A is a knave and B says "A said 'I am a knave'."
+        And(BKnight, AKnight, AKnave), # B is a knight and A is a knight and B says "A said 'I am a knave'."
+        And(BKnight, AKnave, Not(AKnave)), # B is a knight and A is a knave and B says "A said 'I am a knave'."
+        And(BKnave, AKnight, Not(AKnave)), # B is a knave and A is a knight and B says "A said 'I am a knave'."
+        And(BKnave, AKnave, Not(Not(AKnave))), # B is a knave and A is a knave and B says "A said 'I am a knave'."
     ),
     Or(
         And(BKnight, CKnave), # B is a knight and says "C is a knave."
